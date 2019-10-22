@@ -34,17 +34,20 @@ Add relationships to other classes.
 '''
 class Podcast(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=True)
     category = db.Column(db.String, nullable=False)
     release_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     rating = db.Column(db.Integer, default=2)
     likes = db.Column(db.Integer)
     dislikes = db.Column(db.Integer)
 
+    def __repr__(self):
+        return f"Podcast('{self.name}', '{self.category}', '{self.release_date}''{self.rating}')"
+
 '''
 TODO:
 Add relationships to other classes.
-'''
-class songs(db.Model):
+'''class songs(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     songname = db.Column(db.String(75), nullable=False)
     duration = db.Column(db.Float, nullable=False)
