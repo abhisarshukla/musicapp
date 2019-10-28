@@ -1,5 +1,10 @@
 from datetime import datetime
-from musicapp import db
+from musicapp import db, login_manager
+from flask_login import UserMixin
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 listened = db.Table('listened',
             db.Column('user_id' ,db.Integer, db.ForeignKey('user.id')),
@@ -26,15 +31,15 @@ contains = db.Table('contains',
             db.Column('playlist_id', db.Integer, db.ForeignKey('playlist.id'))
 )
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     fname = db.Column(db.String(75), nullable=False)
-    fname = db.Column(db.String(75), nullable=False)
+    mname = db.Column(db.String(75))
     lname = db.Column(db.String(75), nullable=False)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(128), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpeg')
-    preflang = db.Column(db.String(20), nullable=False)
+    #preflang = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String(60), nullable=False)
     searches = db.relationship('user_search_history', backref=db.backref('user'))
     playlists = db.relationship('user_song_playlist', backref=db.backref('user'))
