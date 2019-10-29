@@ -34,9 +34,8 @@ contains = db.Table('contains',
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     fname = db.Column(db.String(75), nullable=False)
-    mname = db.Column(db.String(75))
     lname = db.Column(db.String(75), nullable=False)
-    username = db.Column(db.String(20), unique=True, nullable=False)
+    username = db.Column(db.String(32), unique=True, nullable=False)
     email = db.Column(db.String(128), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpeg')
     #preflang = db.Column(db.String(20), nullable=False)
@@ -47,7 +46,7 @@ class User(db.Model, UserMixin):
     podcasts = db.relationship('Podcast', secondary=subscribed)
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.fname}', '{self.lname}', '{self.email}', '{self.image_file}')"
+        return f"User('{self.username}', '{self.fname}', '{self.mname}', '{self.lname}', '{self.email}', '{self.image_file}')"
 
 class Podcast(db.Model):
     id = db.Column(db.Integer, primary_key=True)
