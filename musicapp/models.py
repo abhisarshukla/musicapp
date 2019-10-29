@@ -43,6 +43,7 @@ class User(db.Model, UserMixin):
     searches = db.relationship('user_search_history', backref=db.backref('user'))
     playlists = db.relationship('user_song_playlist', backref=db.backref('user'))
     songs = db.relationship('Song', secondary=listened)
+    posts = db.relationship('Post', backref='author', lazy=True)
     podcasts = db.relationship('Podcast', secondary=subscribed)
 
     def __repr__(self):
@@ -77,6 +78,15 @@ class Song(db.Model):
     def __repr__(self):
         return f"Song('{self.name}', '{self.release_date}', '{self.rating}')"
 
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f"Post('{self.title}', '{self.date_posted}')"
 class Admin(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fname = db.Column(db.String(75), nullable=False)

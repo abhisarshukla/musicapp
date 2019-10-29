@@ -16,6 +16,10 @@ body {
     background-color: #ff4c00;
   }
 
+  .grey {
+    color: #585858 !important;
+  }
+
   .site-header .navbar-nav .nav-link {
     color: #cbd5db;
   }

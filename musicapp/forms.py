@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, SubmitField, PasswordField, BooleanField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from musicapp.models import User
 from flask_login import current_user
@@ -62,3 +62,38 @@ class UpdateAccountForm(FlaskForm):
             email = User.query.filter_by(email=email.data).first()
             if email:
                 raise ValidationError('That email is taken please choose a different one.')
+
+class UploadPostForm(FlaskForm):
+    title = StringField("Title",
+                        validators=[DataRequired()])
+    content = TextAreaField("Content",
+                        validators=[DataRequired()])
+    submit = SubmitField("Post")
+
+class UploadSongForm(FlaskForm):
+    title = StringField("Title",
+                        validators=[DataRequired()])
+    description = TextAreaField("Description",
+                        validators=[DataRequired()])
+    name = StringField("Song Title",
+                        validators=[DataRequired()])
+    album = StringField("Album",
+                        validators=[DataRequired()])
+    genre = StringField("Genre",
+                        validators=[DataRequired()])
+    song = FileField("Browse song file",
+                        validators=[FileAllowed('wav', 'flac', 'alac', 'aiff', 'mp3')])
+    submit = SubmitField("Post")
+
+class UploadPodcastForm(FlaskForm):
+    title = StringField("Title",
+                        validators=[DataRequired()])
+    description = TextAreaField("Description",
+                        validators=[DataRequired()])
+    name = StringField("Podcast Title",
+                        validators=[DataRequired()])
+    category = StringField("Category",
+                        validators=[DataRequired()])
+    podcast = FileField("Browse podcast file",
+                        validators=[FileAllowed('wav', 'flac', 'alac', 'aiff', 'mp3')])
+    submit = SubmitField("Post")

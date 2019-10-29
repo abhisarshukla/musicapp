@@ -4,7 +4,8 @@ from PIL import Image
 from musicapp import app, bcrypt, db
 from flask import render_template, flash, redirect, url_for, request
 from musicapp.forms import SignUpForm, LoginForm, UpdateAccountForm
-from musicapp.models import User, Song, Admin, Podcast, Playlist
+from musicapp.forms import UploadPodcastForm, UploadPostForm, UploadSongForm
+from musicapp.models import User, Song, Admin, Podcast, Playlist, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
 posts = [
@@ -105,3 +106,23 @@ def account():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('account.html', title='Account',
                             image_file=image_file, form=form)
+
+@app.route("/upload/post/new", methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = UploadPostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been added successfully!', 'success')
+        return redirect(url_for('home'))
+    return render_template('create_post.html', title='New Post', form=form)
+
+
+
+@app.route("upload/song/new", methods=['GET', 'POST'])
+@login_required
+def new_song():
+    form = UploadSongForm()
+    if form.validate_on_submit():
