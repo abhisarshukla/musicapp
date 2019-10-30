@@ -37,7 +37,7 @@ class User(db.Model, UserMixin):
     lname = db.Column(db.String(75), nullable=False)
     username = db.Column(db.String(32), unique=True, nullable=False)
     email = db.Column(db.String(128), unique=True, nullable=False)
-    image_file = db.Column(db.String(20), nullable=False, default='default.jpeg')
+    image_file = db.Column(db.String(32), nullable=False, default='default.jpeg')
     #preflang = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String(60), nullable=False)
     searches = db.relationship('user_search_history', backref=db.backref('user'))

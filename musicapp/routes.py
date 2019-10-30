@@ -74,7 +74,7 @@ def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static', 'profile_pics', picture_fn)
+    picture_path = os.path.join(app.root_path, 'static', 'images', picture_fn)
 
     output_size = (125, 125)
     i = Image.open(form_picture)
@@ -103,7 +103,7 @@ def account():
         form.email.data = current_user.email
         form.fname.data = current_user.fname
         form.lname.data = current_user.lname
-    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    image_file = url_for('static', filename='images/' + current_user.image_file)
     return render_template('account.html', title='Account',
                             image_file=image_file, form=form)
 
@@ -117,7 +117,7 @@ def new_post():
         db.session.commit()
         flash('Your post has been added successfully!', 'success')
         return redirect(url_for('home'))
-    return render_template('create_post.html', title='New Post', form=form)
+    return render_template('upload_post.html', title='New Post', form=form)
 
 
 

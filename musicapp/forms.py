@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from musicapp.models import User
+from musicapp import images, audios
 from flask_login import current_user
 
 class SignUpForm(FlaskForm):
@@ -48,7 +49,7 @@ class UpdateAccountForm(FlaskForm):
     lname = StringField("Last name",
                         validators=[DataRequired(), Length(min=2, max=75)])
     picture = FileField("Update Profile Picture",
-                        validators=[FileAllowed('jpeg', 'png')])
+                        validators=[FileAllowed(images, 'Upload only images!')])
     submit = SubmitField("Update")
 
     def validate_username(self, username):
@@ -82,7 +83,7 @@ class UploadSongForm(FlaskForm):
     genre = StringField("Genre",
                         validators=[DataRequired()])
     song = FileField("Browse song file",
-                        validators=[FileAllowed('wav', 'flac', 'alac', 'aiff', 'mp3')])
+                        validators=[FileRequired(), FileAllowed(audios, 'Upload only audio files!')])
     submit = SubmitField("Post")
 
 class UploadPodcastForm(FlaskForm):
@@ -95,5 +96,5 @@ class UploadPodcastForm(FlaskForm):
     category = StringField("Category",
                         validators=[DataRequired()])
     podcast = FileField("Browse podcast file",
-                        validators=[FileAllowed('wav', 'flac', 'alac', 'aiff', 'mp3')])
+                        validators=[FileRequired(), FileAllowed(audios, 'Upload only audio files!')])
     submit = SubmitField("Post")
