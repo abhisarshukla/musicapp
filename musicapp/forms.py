@@ -49,7 +49,7 @@ class UpdateAccountForm(FlaskForm):
     lname = StringField("Last name",
                         validators=[DataRequired(), Length(min=2, max=75)])
     picture = FileField("Update Profile Picture",
-                        validators=[FileAllowed(images, 'Upload only images!')])
+                        validators=[FileRequired(), FileAllowed(images, 'Upload only images!')])
     submit = SubmitField("Update")
 
     def validate_username(self, username):
@@ -84,7 +84,7 @@ class UploadSongForm(FlaskForm):
                         validators=[DataRequired()])
     song = FileField("Browse song file",
                         validators=[FileRequired(), FileAllowed(audios, 'Upload only audio files!')])
-    submit = SubmitField("Post")
+    submit = SubmitField("Upload")
 
 class UploadPodcastForm(FlaskForm):
     title = StringField("Title",
@@ -97,4 +97,4 @@ class UploadPodcastForm(FlaskForm):
                         validators=[DataRequired()])
     podcast = FileField("Browse podcast file",
                         validators=[FileRequired(), FileAllowed(audios, 'Upload only audio files!')])
-    submit = SubmitField("Post")
+    submit = SubmitField("Upload")

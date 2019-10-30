@@ -52,12 +52,14 @@ class User(db.Model, UserMixin):
 class Podcast(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=True)
+    title = db.Column(db.String(75), nullable=False)
+    description = db.Column(db.String, default='No description')
     category = db.Column(db.String, nullable=False)
     release_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     file_location = db.Column(db.String(20), nullable=True)
     rating = db.Column(db.Integer, default=2)
-    likes = db.Column(db.Integer)
-    dislikes = db.Column(db.Integer)
+    likes = db.Column(db.Integer, default=0)
+    dislikes = db.Column(db.Integer, default=0)
     artists = db.relationship('Artist', backref=db.backref('podcast'))
 
     def __repr__(self):
@@ -66,11 +68,13 @@ class Podcast(db.Model):
 class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(75), nullable=False)
-    duration = db.Column(db.Float, nullable=False)
+    title = db.Column(db.String(75), nullable=False)
+    description = db.Column(db.String, default='No description')
+    #duration = db.Column(db.Float, nullable=False)
     release_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     rating = db.Column(db.Integer, default=2)
-    likes = db.Column(db.Integer)
-    dislikes = db.Column(db.Integer)
+    likes = db.Column(db.Integer, default=0)
+    dislikes = db.Column(db.Integer, default=0)
     file_location = db.Column(db.String(20), nullable=False)
     album = db.Column(db.String(75), nullable=False)
     genre = db.Column(db.String(75), nullable=False)
@@ -109,7 +113,7 @@ class Artist(db.Model):
     dislikes = db.Column(db.Integer)
     rating = db.Column(db.Integer, default=2)
     podcast_id = db.Column(db.Integer, db.ForeignKey('podcast.id'))
-    compose = db.relationship('Song', secondary=composed, backref=db.backref('conposer', lazy='dynamic'))
+    compose = db.relationship('Song', secondary=composed, backref=db.backref('composer', lazy='dynamic'))
 
     def __repr(self):
         return f"Artist('{self.fname}', '{self.lname}', '{self.rating}')"

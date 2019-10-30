@@ -38,8 +38,8 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item" href="{{ url_for('new_post') }}">New Post</a>
-                  <a class="dropdown-item" href="#">New Song</a>
-                  <a class="dropdown-item" href="#">New Podcast</a>
+                  <a class="dropdown-item" href="{{ url_for('new_song') }}">New Song</a>
+                  <a class="dropdown-item" href="{{ url_for('new_podcast') }}">New Podcast</a>
                 </div>
               </div>
               <a class="nav-item nav-link grey" href="{{ url_for('account') }}">Account</a>

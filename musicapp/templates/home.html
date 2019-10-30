@@ -12,4 +12,28 @@
           </div>
         </article>
     {% endfor %}
+    {% for song in songs %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ song.author }}</a>
+              <small class="text-muted">{{ song.date_posted }}</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ podcast.title }}</a></h2>
+            <p class="article-content">{{ song.content }}</p>
+          </div>
+        </article>
+    {% endfor %}
+    {% for podcast in podcasts %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ podcast.author }}</a>
+              <small class="text-muted">{{ podcast.date_posted }}</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ podcast.title }}</a></h2>
+            <p class="article-content">{{ podcast.content }}</p>
+          </div>
+        </article>
+    {% endfor %}
 {% endblock content %}

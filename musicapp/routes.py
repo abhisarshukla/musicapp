@@ -1,33 +1,20 @@
 import secrets
 import os
 from PIL import Image
-from musicapp import app, bcrypt, db
+from musicapp import app, bcrypt, db, images, audios
 from flask import render_template, flash, redirect, url_for, request
 from musicapp.forms import SignUpForm, LoginForm, UpdateAccountForm
 from musicapp.forms import UploadPodcastForm, UploadPostForm, UploadSongForm
 from musicapp.models import User, Song, Admin, Podcast, Playlist, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
-posts = [
-    {
-        'author': 'Corey Schafer',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'April 20, 2018'
-    },
-    {
-        'author': 'Jane Doe',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 21, 2018'
-    }
-]
-
-
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html', posts=posts)
+    posts = Post.query.all()
+    songs = Song.query.all()
+    podcasts = Podcast.query.all()
+    return render_template('home.html', posts=posts, songs=songs, podcasts=podcasts)
 
 
 @app.route("/about")
@@ -119,10 +106,38 @@ def new_post():
         return redirect(url_for('home'))
     return render_template('upload_post.html', title='New Post', form=form)
 
-
-
-@app.route("upload/song/new", methods=['GET', 'POST'])
+@app.route("/upload/song/new", methods=['GET', 'POST'])
 @login_required
 def new_song():
     form = UploadSongForm()
     if form.validate_on_submit():
+        if request.method == 'POST':
+            song_file = request.files['song']
+            random_hex = secrets.token_hex(8)
+            _, f_ext = os.path.splitext(song_file.filename)
+            song_file.filename = 'm_' + random_hex + f_ext
+            audio_file = audios.save(song_file)
+        song = Song(name=form.name.data, album=form.album.data, genre=form.genre.data, title=form.title.data, description=form.description.data, file_location=audio_file)
+        db.session.add(song)
+        db.session.commit()
+        flash('Your song has been added successfully!', 'success')
+        return redirect(url_for('home'))
+    return render_template('upload_song.html', title='New Song', form=form)
+
+@app.route("/upload/podcast/new", methods=['GET', 'POST'])
+@login_required
+def new_podcast():
+    form = UploadPodcastForm()
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            podcast_file = request.files['podcast']
+            random_hex = secrets.token_hex(8)
+            _, f_ext = os.path.splitext(podcast_file.filename)
+            podcast_file.filename = 'p_' + random_hex + f_ext
+            audio_file = audios.save(podcast_file)
+        podcast = Podcast(name=form.name.data, category=form.category.data, title=form.title.data, description=form.description.data, file_location=audio_file)
+        db.session.add(podcast)
+        db.session.commit()
+        flash('Your song has been added successfully!', 'success')
+        return redirect(url_for('home'))
+    return render_template('upload_podcast.html', title='New Podcast', form=form)

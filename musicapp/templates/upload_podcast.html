@@ -5,7 +5,7 @@
         <form method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <fieldset>
-                <legend class="border-bottom mb-4">New Post</legend>
+                <legend class="border-bottom mb-4">New Podcast</legend>
 
                 <div class=form-group>
                         {{ form.title.label(class="form-control-label") }}
@@ -50,38 +50,24 @@
             </div>
 
             <div class=form-group>
-                {{ form.album.label(class="form-control-label") }}
-                {% if form.album.errors %}
-                    {{  form.album(class="form-control form-control-lg is-valid") }}
+                {{ form.category.label(class="form-control-label") }}
+                {% if form.category.errors %}
+                    {{  form.category(class="form-control form-control-lg is-valid") }}
                     <div class="invalid-feedback">
-                        {% for error in form.album.errors %}
+                        {% for error in form.category.errors %}
                             <span>{{ error}}</span>
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{ form.album(class="form-control form-control-lg")}}
+                    {{ form.category(class="form-control form-control-lg")}}
                 {% endif %}
             </div>
 
             <div class=form-group>
-                {{ form.genre.label(class="form-control-label") }}
-                {% if form.genre.errors %}
-                    {{  form.genre(class="form-control form-control-lg is-valid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.genre.errors %}
-                            <span>{{ error}}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.genre(class="form-control form-control-lg")}}
-                {% endif %}
-            </div>
-
-            <div class=form-group>
-                {{ form.song.label(class="form-control-label") }}
-                {{ form.song(class="form-control-file") }}
-                {% if form.song.errors %}
-                    {% for error in form.song.errors %}
+                {{ form.podcast.label(class="form-control-label") }}
+                {{ form.podcast(class="form-control-file") }}
+                {% if form.podcast.errors %}
+                    {% for error in form.podcast.errors %}
                         <span class="danger">{{ error }}</span></div></br>
                     {% endfor %}
                 {% endif %}
