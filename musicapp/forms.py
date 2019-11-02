@@ -98,3 +98,13 @@ class UploadPodcastForm(FlaskForm):
     podcast = FileField("Browse podcast file",
                         validators=[FileRequired(), FileAllowed(audios, 'Upload only audio files!')])
     submit = SubmitField("Upload")
+
+class SearchForm(FlaskForm):
+    title = StringField("Title",
+                        validators=[DataRequired()])
+    name = StringField("Podcast Title",
+                        validators=[DataRequired()])
+    category = StringField("Category")
+    album = StringField("Album")
+    genre = StringField("Genre")
+    submit = SubmitField("Search")

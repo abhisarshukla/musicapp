@@ -4,7 +4,7 @@ from PIL import Image
 from musicapp import app, bcrypt, db, images, audios
 from flask import render_template, flash, redirect, url_for, request
 from musicapp.forms import SignUpForm, LoginForm, UpdateAccountForm
-from musicapp.forms import UploadPodcastForm, UploadPostForm, UploadSongForm
+from musicapp.forms import UploadPodcastForm, UploadPostForm, UploadSongForm, SearchForm
 from musicapp.models import User, Song, Admin, Podcast, Playlist, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -14,12 +14,12 @@ def home():
     posts = Post.query.all()
     songs = Song.query.all()
     podcasts = Podcast.query.all()
-    return render_template('home.html', posts=posts, songs=songs, podcasts=podcasts)
+    return render_template('home.html', posts=posts, songs=songs, podcasts=podcasts, audio=audios)
 
 
-@app.route("/about")
-def about():
-    return render_template('about.html', title='About')
+@app.route("/search")
+def search():
+    return render_template('search.html', title='Search')
 
 @app.route("/signup", methods=['POST', 'GET'])
 def signup():
@@ -141,3 +141,9 @@ def new_podcast():
         flash('Your song has been added successfully!', 'success')
         return redirect(url_for('home'))
     return render_template('upload_podcast.html', title='New Podcast', form=form)
+
+# @app.route("/search")
+# def search():
+#     form = SearchForm()
+#     results = []
+#     if form.validate_on_submit():

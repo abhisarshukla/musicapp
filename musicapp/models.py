@@ -47,7 +47,7 @@ class User(db.Model, UserMixin):
     podcasts = db.relationship('Podcast', secondary=subscribed)
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.fname}', '{self.mname}', '{self.lname}', '{self.email}', '{self.image_file}')"
+        return f"User('{self.username}', '{self.fname}', '{self.lname}', '{self.email}', '{self.image_file}')"
 
 class Podcast(db.Model):
     id = db.Column(db.Integer, primary_key=True)

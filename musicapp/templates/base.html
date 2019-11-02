@@ -27,7 +27,7 @@
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link grey" href="{{ url_for('home') }}">Home</a>
-              <a class="nav-item nav-link grey" href="{{ url_for('about') }}">About</a>
+              <a class="nav-item nav-link grey" href="{{ url_for('search') }}">Search</a>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
@@ -53,7 +53,7 @@
         </div>
       </nav>
     </header>
-    <main role="main" class="container-fluid">
+    <main role="main" class="container">
         <div class="col-md-7">
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

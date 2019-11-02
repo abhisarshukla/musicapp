@@ -19,8 +19,13 @@
               <a class="mr-2" href="#">{{ song.author }}</a>
               <small class="text-muted">{{ song.date_posted }}</small>
             </div>
-            <h2><a class="article-title" href="#">{{ podcast.title }}</a></h2>
-            <p class="article-content">{{ song.content }}</p>
+            <h2><a class="article-title" href="#">{{ song.title }}</a></h2>
+            <audio
+            controls
+            src="{{ url_for('static', filename='audio/' + song.file_location) }}">
+            Your browser does not support the
+            <code>audio</code> element.
+            </audio>
           </div>
         </article>
     {% endfor %}
@@ -32,7 +37,12 @@
               <small class="text-muted">{{ podcast.date_posted }}</small>
             </div>
             <h2><a class="article-title" href="#">{{ podcast.title }}</a></h2>
-            <p class="article-content">{{ podcast.content }}</p>
+            <audio
+            controls
+            src="{{ url_for('static', filename='audio/' + song.file_location) }}">
+            Your browser does not support the
+            <code>audio</code> element.
+            </audio>
           </div>
         </article>
     {% endfor %}
