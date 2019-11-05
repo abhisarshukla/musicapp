@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+    {% for result in results %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ result.author }}</a>
+              <small class="text-muted">{{ result.date_posted }}</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ result.name }}</a></h2>
+            <audio
+            controls
+            src="{{ url_for('static', filename='audio/' + result.file_location) }}">
+            Your browser does not support the
+            <code>audio</code> element.
+            </audio>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}

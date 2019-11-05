@@ -27,7 +27,15 @@
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link grey" href="{{ url_for('home') }}">Home</a>
-              <a class="nav-item nav-link grey" href="{{ url_for('search') }}">Search</a>
+              <div class="dropdown">
+                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Search
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="{{ url_for('search_song') }}">Song</a>
+                  <a class="dropdown-item" href="{{ url_for('search_podcast') }}">Podcast</a>
+                </div>
+              </div>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">

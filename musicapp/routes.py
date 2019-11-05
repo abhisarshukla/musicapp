@@ -3,8 +3,8 @@ import os
 from PIL import Image
 from musicapp import app, bcrypt, db, images, audios
 from flask import render_template, flash, redirect, url_for, request
-from musicapp.forms import SignUpForm, LoginForm, UpdateAccountForm
-from musicapp.forms import UploadPodcastForm, UploadPostForm, UploadSongForm, SearchForm
+from musicapp.forms import SignUpForm, LoginForm, UpdateAccountForm, PodcastSearchForm
+from musicapp.forms import UploadPodcastForm, UploadPostForm, UploadSongForm, SongSearchForm
 from musicapp.models import User, Song, Admin, Podcast, Playlist, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -142,8 +142,35 @@ def new_podcast():
         return redirect(url_for('home'))
     return render_template('upload_podcast.html', title='New Podcast', form=form)
 
-# @app.route("/search")
-# def search():
-#     form = SearchForm()
-#     results = []
-#     if form.validate_on_submit():
+@app.route("/search/song", methods=['GET', 'POST'])
+def search_song():
+    form = SongSearchForm()
+    results = []
+    if form.validate_on_submit():
+        name = form.name.data
+        album = form.album.data
+        genre = form.genre.data
+        query = Song.query
+        if genre:
+            query = query.filter_by(genre=genre)
+        if album:
+            query = query.filter_by(album=album)
+        query = query.filter_by(name=name)
+        results = query.all()
+        return render_template('result.html', title='results', results=results)
+    return render_template('search_song.html', title='search song', form=form)
+
+@app.route("/search/podcast", methods=['GET', 'POST'])
+def search_podcast():
+    form = PodcastSearchForm()
+    results = []
+    if form.validate_on_submit():
+        name = form.name.data
+        category = form.category.data
+        query = Song.query
+        if category:
+            query = query.filter_by(category=category)
+        query = query.filter_by(name=name)
+        results = query.all()
+        return render_template('result.html', title='results', results=results)
+    return render_template('search_podcast.html', title='search podcast', form=form)
