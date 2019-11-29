@@ -16,11 +16,6 @@ includes = db.Table('includes',
             db.Column('song_id', db.Integer, db.ForeignKey('song.id'))
 )
 
-composed = db.Table('composed',
-            db.Column('artist_id', db.Integer, db.ForeignKey('artist.id')),
-            db.Column('song_id', db.Integer, db.ForeignKey('song.id'))
-)
-
 subscribed = db.Table('subscribed',
             db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
             db.Column('podcast_id', db.Integer, db.ForeignKey('podcast.id'))
@@ -29,6 +24,11 @@ subscribed = db.Table('subscribed',
 contains = db.Table('contains',
             db.Column('song_id', db.Integer, db.ForeignKey('song.id')),
             db.Column('playlist_id', db.Integer, db.ForeignKey('playlist.id'))
+)
+
+composed = db.Table('composed',
+            db.Column('artist_id', db.Integer, db.ForeignKey('artist.id')),
+            db.Column('song_id', db.Integer, db.ForeignKey('song.id'))
 )
 
 class User(db.Model, UserMixin):
@@ -102,15 +102,11 @@ class Admin(db.Model):
 
 class Artist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    fname = db.Column(db.String(75), nullable=False)
-    mname = db.Column(db.String(75), nullable=False)
-    lname = db.Column(db.String(75), nullable=False)
+    name = db.Column(db.String(32), unique=True, nullable=False)
     email = db.Column(db.String(128), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpeg')
-    preflang = db.Column(db.String(20), nullable=False)
-    password = db.Column(db.String(60), nullable=False)
-    likes = db.Column(db.Integer)
-    dislikes = db.Column(db.Integer)
+    likes = db.Column(db.Integer, default=0)
+    dislikes = db.Column(db.Integer, default=0)
     rating = db.Column(db.Integer, default=2)
     podcast_id = db.Column(db.Integer, db.ForeignKey('podcast.id'))
     compose = db.relationship('Song', secondary=composed, backref=db.backref('composer', lazy='dynamic'))

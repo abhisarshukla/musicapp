@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
+{% if posts or songs or podcasts %}
     {% for post in posts %}
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{ post.author }}</a>
+                <h3><a class="mr-2" href="#">{{ post.author.username }}</a></h3>
               <small class="text-muted">{{ post.date_posted }}</small>
             </div>
             <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
@@ -16,10 +17,10 @@
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{ song.author }}</a>
-              <small class="text-muted">{{ song.date_posted }}</small>
+              <h3><a class="mr-2" href="#">{{ song.composer[0].name }}</a></h3>
+              <small class="text-muted">{{ song.release_date }}</small>
             </div>
-            <h2><a class="article-title" href="#">{{ song.title }}</a></h2>
+            <h2><a class="article-title" href="#">{{ song.name }}</a></h2>
             <audio
             controls
             src="{{ url_for('static', filename='audio/' + song.file_location) }}">
@@ -33,8 +34,8 @@
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{ podcast.author }}</a>
-              <small class="text-muted">{{ podcast.date_posted }}</small>
+              <a class="mr-2" href="#">{{ podcast.artists }}</a>
+              <small class="text-muted">{{ podcast.release_date }}</small>
             </div>
             <h2><a class="article-title" href="#">{{ podcast.title }}</a></h2>
             <audio
@@ -46,4 +47,13 @@
           </div>
         </article>
     {% endfor %}
+{% else %}
+      <article class="media">
+        <!-- <h3>Wow! Such Empty.</h3> -->
+        <br>
+        <div class="media">
+          <img src="{{ url_for('static', filename='images/empty.jpg') }}">
+        </div>
+      </article>
+{% endif %}
 {% endblock content %}

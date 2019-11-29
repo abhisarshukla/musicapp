@@ -82,6 +82,8 @@ class UploadSongForm(FlaskForm):
                         validators=[DataRequired()])
     genre = StringField("Genre",
                         validators=[DataRequired()])
+    artist = StringField("Artist Name",
+                        validators=[DataRequired()])
     song = FileField("Browse song file",
                         validators=[FileRequired(), FileAllowed(audios, 'Upload only audio files!')])
     submit = SubmitField("Upload")
@@ -95,19 +97,19 @@ class UploadPodcastForm(FlaskForm):
                         validators=[DataRequired()])
     category = StringField("Category",
                         validators=[DataRequired()])
+    artist = StringField("Artist Name",
+                        validators=[DataRequired()])
     podcast = FileField("Browse podcast file",
                         validators=[FileRequired(), FileAllowed(audios, 'Upload only audio files!')])
     submit = SubmitField("Upload")
 
 class SongSearchForm(FlaskForm):
-    name = StringField("Song Title",
-                        validators=[DataRequired()])
+    name = StringField("Song Title")
     album = StringField("Album")
     genre = StringField("Genre")
     submit = SubmitField("Search")
 
 class PodcastSearchForm(FlaskForm):
-    name = StringField("Podcast Title",
-                        validators=[DataRequired()])
+    name = StringField("Podcast Title")
     category = StringField("Category")
     submit = SubmitField("Search")

@@ -5,7 +5,7 @@
         <form method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <fieldset>
-                <legend class="border-bottom mb-4">New Post</legend>
+                <legend class="border-bottom mb-4">New Song</legend>
 
                 <div class=form-group>
                         {{ form.title.label(class="form-control-label") }}
@@ -74,6 +74,20 @@
                     </div>
                 {% else %}
                     {{ form.genre(class="form-control form-control-lg")}}
+                {% endif %}
+            </div>
+
+            <div class=form-group>
+                {{form.artist.label(class="form-control-label") }}
+                {% if form.artist.errors %}
+                    {{  form.artist(class="form-control form-control-lg is-valid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.artist.errors %}
+                            <span>{{ error}}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.artist(class="form-control form-control-lg")}}
                 {% endif %}
             </div>
 

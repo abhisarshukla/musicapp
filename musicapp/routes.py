@@ -5,7 +5,7 @@ from musicapp import app, bcrypt, db, images, audios
 from flask import render_template, flash, redirect, url_for, request
 from musicapp.forms import SignUpForm, LoginForm, UpdateAccountForm, PodcastSearchForm
 from musicapp.forms import UploadPodcastForm, UploadPostForm, UploadSongForm, SongSearchForm
-from musicapp.models import User, Song, Admin, Podcast, Playlist, Post
+from musicapp.models import User, Song, Podcast, Playlist, Post, Artist
 from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route("/")
@@ -16,10 +16,6 @@ def home():
     podcasts = Podcast.query.all()
     return render_template('home.html', posts=posts, songs=songs, podcasts=podcasts, audio=audios)
 
-
-@app.route("/search")
-def search():
-    return render_template('search.html', title='Search')
 
 @app.route("/signup", methods=['POST', 'GET'])
 def signup():
@@ -117,11 +113,20 @@ def new_song():
             _, f_ext = os.path.splitext(song_file.filename)
             song_file.filename = 'm_' + random_hex + f_ext
             audio_file = audios.save(song_file)
-        song = Song(name=form.name.data, album=form.album.data, genre=form.genre.data, title=form.title.data, description=form.description.data, file_location=audio_file)
-        db.session.add(song)
-        db.session.commit()
-        flash('Your song has been added successfully!', 'success')
-        return redirect(url_for('home'))
+        artist = form.artist.data
+        artist = Artist.query.filter_by(name=artist).first()
+        if artist:
+            artist_id = artist.id
+            song = Song(name=form.name.data, album=form.album.data, genre=form.genre.data, title=form.title.data, description=form.description.data, file_location=audio_file)
+            db.session.add(song)
+            db.session.commit()
+            song.composer.append(artist)
+            db.session.commit()
+            flash('Your song has been added successfully!', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Entered artist does not exist', 'danger')
+            return redirect(url_for('new_song'))
     return render_template('upload_song.html', title='New Song', form=form)
 
 @app.route("/upload/podcast/new", methods=['GET', 'POST'])
@@ -135,11 +140,18 @@ def new_podcast():
             _, f_ext = os.path.splitext(podcast_file.filename)
             podcast_file.filename = 'p_' + random_hex + f_ext
             audio_file = audios.save(podcast_file)
-        podcast = Podcast(name=form.name.data, category=form.category.data, title=form.title.data, description=form.description.data, file_location=audio_file)
-        db.session.add(podcast)
-        db.session.commit()
-        flash('Your song has been added successfully!', 'success')
-        return redirect(url_for('home'))
+        artist = form.artist.data
+        artist = Artist.query.filter_by(name=artist).first()
+        if artist:
+            artist_id = artist.id
+            podcast = Podcast(name=form.name.data, category=form.category.data, title=form.title.data, description=form.description.data, file_location=audio_file, artists=artist)
+            db.session.add(podcast)
+            db.session.commit()
+            flash('Your podcast has been added successfully!', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Entered artist does not exist', 'danger')
+            return redirect(url_for('new_song'))
     return render_template('upload_podcast.html', title='New Podcast', form=form)
 
 @app.route("/search/song", methods=['GET', 'POST'])
@@ -155,8 +167,10 @@ def search_song():
             query = query.filter_by(genre=genre)
         if album:
             query = query.filter_by(album=album)
-        query = query.filter_by(name=name)
+        if name:
+            query = query.filter_by(name=name)
         results = query.all()
+        print(results)
         return render_template('result.html', title='results', results=results)
     return render_template('search_song.html', title='search song', form=form)
 
