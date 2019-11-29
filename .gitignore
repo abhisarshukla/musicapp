@@ -106,3 +106,4 @@ venv.bak/
 #profile_pics directory
 musicapp/static/images
 musicapp/static/audio
+.db
