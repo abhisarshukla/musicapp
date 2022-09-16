@@ -16,7 +16,7 @@ Flask-Uploads==0.2.1
 Flask-WTF==0.14.2
 itsdangerous==1.1.0
 Jinja2==2.11.3
-Mako==1.1.0
+Mako==1.2.2
 MarkupSafe==1.1.1
 mutagen==1.42.0
 Pillow==9.0.0
